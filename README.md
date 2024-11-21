@@ -399,7 +399,6 @@ disponible.
 > `int pthread_cond_signal(pthread_cond_t *condition);` : réveil d'un
 thread en attente de la condition
 
-\
 Modifiez les sous-programmes `extraiteNoms` et `insererNom` de manière à
 éviter l'attente active des consommateurs, c'est-à-dire à ne réveiller
 le thread de tri uniquement lorsqu'une données est disponible dans la
