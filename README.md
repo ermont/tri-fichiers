@@ -126,7 +126,7 @@ concernés. Le résultat de cette recherche est **inséré** dans une
 **extrait** les noms de cette liste non triée et les place dans une
 liste, triée celle-ci.
 
-![Structure](./img/structure.png "Structure de notre programme de tri.")
+![Structure](./img/structure.png "Structure de notre programme de tri."){width=50%}
 
 Le choix d'une telle structure de programme peut laisser perplexe, mais
 elle fait clairement apparaître une possibilité d'optimisation du
@@ -427,18 +427,21 @@ sous-programmes `ouvrirListeNoms` et `fermerListeNoms`.
 ## Etude des performances
 
 La commande Unix `time` permet de mesurer le temps pris par un processus
-lors de son exécution. Le tableau [1](#tab:eval){reference-type="ref"
-reference="tab:eval"} compare les temps d'exécution des deux versions de
+lors de son exécution. Le tableau <a href="#tab:eval" data-reference-type="ref"
+data-reference="tab:eval">1</a> compare les temps d'exécution des deux versions de
 notre programme appliquée sur trois répertoires différents.
+<div id="tab:eval">
 
-  -------------- -------------- ------- ------ -------------- ------- ------ -------------- ------ ------
-                  Répertoire 1                  Répertoire 2                  Répertoire 3         
-                      real       user    sys        real       user    sys        real       user   sys
-    Un thread        55.17       16.13   1.84      90.82       40.44   2.03      16.44       1.82   0.40
-   Deux threads      41.84       17.56   2.15      63.59       41.94   4.33      15.27       2.14   0.63
-  -------------- -------------- ------- ------ -------------- ------- ------ -------------- ------ ------
+|  |  |  |  |  |  |  |  |  |  |
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|  | Répertoire 1 |  |  | Répertoire 2 |  |  | Répertoire 3 |  |  |
+|  | real | user | sys | real | user | sys | real | user | sys |
+| Un thread | 55.17 | 16.13 | 1.84 | 90.82 | 40.44 | 2.03 | 16.44 | 1.82 | 0.40 |
+| Deux threads | 41.84 | 17.56 | 2.15 | 63.59 | 41.94 | 4.33 | 15.27 | 2.14 | 0.63 |
 
-  **Table 1** : Temps d'exécution de `trier` et `trier-mt` pour 3 répertoires différents
+**Table 1** : Temps d’exécution de `trier` et `trier-mt` pour 3 répertoires différents
+
+</div>
 
 Ce tableau nous montre que le temps « réel » est sensiblement plus court
 pour le programme multithreadé. Les temps passés dans le système et en
