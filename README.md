@@ -126,7 +126,7 @@ concernés. Le résultat de cette recherche est **inséré** dans une
 **extrait** les noms de cette liste non triée et les place dans une
 liste, triée celle-ci.
 
-![Structure](./img/structure.png "Structure de notre programme de tri."){width=50%}
+<img src="./img/structure.png" width=100% height=100%>
 
 Le choix d'une telle structure de programme peut laisser perplexe, mais
 elle fait clairement apparaître une possibilité d'optimisation du
