@@ -13,15 +13,15 @@ communiquant par la liste intermédiaire (non triée).
 Pour cela, vous devrez créer de nouvelles versions de certains des
 fichiers qui vous sont fournis :
 
--   `liste-noms.h` et `liste-noms.c` sont une implantation élémentaire
+- `liste-noms.h` et `liste-noms.c` sont une implantation élémentaire
     d'une liste de chaînes de caractères ;
 
--   `liste-triee-noms.h` et `liste-triee-noms.c` sont une implantation
+- `liste-triee-noms.h` et `liste-triee-noms.c` sont une implantation
     d'une liste triée de chaîne de caractères ;
 
--   `trier.c` est la version non parallélisée du programme ;
+- `trier.c` est la version non parallélisée du programme ;
 
--   `Makefile` vous permet de compiler correctement vos programmes.
+- `Makefile` vous permet de compiler correctement vos programmes.
 
 Il faudra naturellement intégrer dans certains de ces fichiers la
 gestion du parallélisme. Les fichiers intégrant la gestion du
@@ -126,7 +126,7 @@ concernés. Le résultat de cette recherche est **inséré** dans une
 **extrait** les noms de cette liste non triée et les place dans une
 liste, triée celle-ci.
 
-<img src="./img/structure.png" width=100% height=100%>
+<img src="./img/structure.png" width=75% height=75%>
 
 Le choix d'une telle structure de programme peut laisser perplexe, mais
 elle fait clairement apparaître une possibilité d'optimisation du
@@ -143,7 +143,7 @@ processeur peut en effet trier les noms déjà découverts.
 
 ## Premier essai
 
-Compilez le programme à l'aide du fichier `Makefile` 
+Compilez le programme à l'aide du fichier `Makefile`
 ```bash
 make
 ```
@@ -162,10 +162,10 @@ chacune des deux opérations (recherche puis tri) par un thread distinct.
 > **Création d'un thread**
 > 
 > `int pthread_create(pthread_t *tid, pthread_attr_t * attr, void * (*start_routine)(void *), void * arg);`
-> -   `tid` : identifiant du thread, fourni par le système
-> -   `attr` : configuration du thread, `NULL` = configuration par défaut
-> -   `start_routine` : la fonction exécutée par le thread
-> -   `arg` : valeur de l'argument de la fonction, `NULL` si pas
+> - `tid` : identifiant du thread, fourni par le système
+> - `attr` : configuration du thread, `NULL` = configuration par défaut
+> - `start_routine` : la fonction exécutée par le thread
+> - `arg` : valeur de l'argument de la fonction, `NULL` si pas
     d'argument.
 >
 
@@ -186,9 +186,9 @@ lancement de thread, par exemple :
 
 Modifiez le programme `trier-mt.c` de manière à créer 2 threads :
 
--   un thread qui exécute la recherche ;
+- un thread qui exécute la recherche ;
 
--   un thread qui effectue le trie de la liste de fichiers trouvée.
+- un thread qui effectue le trie de la liste de fichiers trouvée.
 
 Testez l'exécution du programme avec ces 2 threads.
 
@@ -197,8 +197,8 @@ Testez l'exécution du programme avec ces 2 threads.
 > **Attente de la terminaison des threads**
 > 
 > `int pthread_join(pthread_t tid, void **thread_return);`
-> -   `tid` : identifiant du thread à attendre
-> -   `thread_return` : valeur de retour du thread, `NULL` si pas de
+> - `tid` : identifiant du thread à attendre
+> - `thread_return` : valeur de retour du thread, `NULL` si pas de
     retour.
 >
 
@@ -241,9 +241,9 @@ sous-programmes manipulent la structure `listeNoms`.
 > **Exclusion mutuelle - mise en place d'un verrou**
 >
 > `pthread_mutex_t verrou;`
-> -   Initialisation directe : `verrou= PTHREAD_MUTEX_INITIALIZER;`
-> -   ou bien : `int pthread_mutex_init(pthread_mutex_t *verrou, const pthread_mutexattr_t *mutexattr);`
-> -   `mutexattr` permet de définir les options associées à la
+> - Initialisation directe : `verrou= PTHREAD_MUTEX_INITIALIZER;`
+> - ou bien : `int pthread_mutex_init(pthread_mutex_t *verrou, const pthread_mutexattr_t *mutexattr);`
+> - `mutexattr` permet de définir les options associées à la
         variable ; option par défaut : `NULL`
         
 > `int pthread_mutex_lock(pthread_mutex_t *verrou);` : verrouillage --
@@ -276,9 +276,9 @@ autant maintenant.
 Nous y apporterons la réponse suivante. Une liste est vide lorsque les
 deux conditions suivantes sont remplies :
 
--   il n'y aucun élément dans la liste ;
+- il n'y aucun élément dans la liste ;
 
--   il n'y a plus de producteur susceptible d'y insérer des données.
+- il n'y a plus de producteur susceptible d'y insérer des données.
 
 La première condition est relativement simple à identifier grâce à la
 structure même de la liste.
@@ -363,7 +363,7 @@ dans `liste-triee-mt.c`) suivant :
     }
 ```
 
-#### Attente active.
+#### Attente active
 
 Étant données les modifications que nous venons d'apporter à notre
 liste, un thread qui souhaite consommer des éléments de la liste tant
@@ -389,9 +389,9 @@ disponible.
 > **Variable condition et attente passive**
 > 
 > `pthread_cond_t condition;`
-> -   Initialisation :\
+> - Initialisation :\
     `int pthread_cond_init(pthread_cond_t *condition, pthread_condattr_t *cond_attr);
-> -   `cond_attr` : configuration de la condition ; `NULL` = options par
+> - `cond_attr` : configuration de la condition ; `NULL` = options par
     défaut
 
 > `int pthread_cond_wait(pthread_cond_t *condition, pthread_mutex_t *mutex);`
@@ -418,7 +418,6 @@ consommateur.
 plus simple de placer ces actions respectivement avant le lancement du
 thread, et après l'attente de sa terminaison.
 
-\
 Modifiez le programme principal de sorte que le nombre de producteurs
 soit correctement connu par la liste de noms en utilisant les appels aux
 sous-programmes `ouvrirListeNoms` et `fermerListeNoms`.
@@ -431,12 +430,11 @@ data-reference="tab:eval">1</a> compare les temps d'exécution des deux versions
 notre programme appliquée sur trois répertoires différents.
 <div id="tab:eval">
 
-|  |  |  |  |  |  |  |  |  |  |
-|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|  | Répertoire 1 |  |  | Répertoire 2 |  |  | Répertoire 3 |  |  |
-|  | real | user | sys | real | user | sys | real | user | sys |
-| Un thread | 55.17 | 16.13 | 1.84 | 90.82 | 40.44 | 2.03 | 16.44 | 1.82 | 0.40 |
-| Deux threads | 41.84 | 17.56 | 2.15 | 63.59 | 41.94 | 4.33 | 15.27 | 2.14 | 0.63 |
+|  | Répertoire 1 | Répertoire 2 | Répertoire 3 |
+|:--:|:--:|:--:|:--:|
+|  | real  user  sys | real user sys | real user sys |
+| Un thread | 55.17 16.13 1.84 | 90.82 40.44 2.03 | 16.44 1.82 0.40 |
+| Deux threads | 41.84 17.56 2.15 | 63.59 41.94 4.33 | 15.27 2.14 0.63 |
 
 **Table 1** : Temps d’exécution de `trier` et `trier-mt` pour 3 répertoires différents
 
@@ -449,7 +447,6 @@ surcoût dû à la manipulation des mécanismes de synchronisation. Il faut
 faire attention, en réalisant de tels tests, à se placer dans des
 conditions parfaitement similaires pour les deux programmes, notemment
 vis à vis des caches qui peuvent fausser les résultats.
-
 
 Testez le temps d'exécution du programme `trier-mt` que vous avez
 réalisé et comparez le à celui du programme `trier`.
