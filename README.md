@@ -207,7 +207,7 @@ A ce stade, les threads s'exécutent en parallèle. La primitive
 de retour du thread est alors transmis via l'argument `thread_return`.
 Par exemple :
 ```c
-    if ((erreur= pthread_join(&tidTri, (void *) &listeTriee)) != 0) {
+    if ((erreur= pthread_join(tidTri, (void *) &listeTriee)) != 0) {
         fprintf(stderr, "[%s] erreur pthread join\n", strerror(erreur));
         exit(EXIT_FAILURE);
     } 

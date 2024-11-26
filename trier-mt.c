@@ -15,6 +15,8 @@
 #include <tri-fichier.h>
 #include <liste-noms-mt.h>
 
+typedef void * (*ThreadMain)(void *);
+
 int main(int argc, char * argv[])
 {
    RechercheNomsFichiers   recherche;
