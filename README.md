@@ -178,11 +178,24 @@ puis remplacer les deux lignes d'appel aux sous-programmes par le
 lancement de thread, par exemple :
 ```c
     /* On lance le thread qui remplit la liste */
-    if ((erreur= pthread_create(&tidRech, NULL, (ThreadMain)chercherFichiers, &recherche)) != 0) {
+    if ((erreur= pthread_create(&tidRech, NULL, (ThreadMain)&chercherFichiers, &recherche)) != 0) {
         fprintf(stderr, "[%s] erreur pthread create\n", strerror(erreur));
         exit(EXIT_FAILURE);
     }
 ```
+
+**Explications de la commande `pthread_create`**
+
+La commande crée un thread identifié `tidRech`dont le rôle est d'exécuter la fonction `chercherFichiers` avec l'argument `recherche`. Le format de la fonction attendue par `pthread_create`
+étant différent de celui de la fonction `chercherFichiers`, il faut faire du trans-typage. 
+C'est pourquoi vous trouverez écrit `(ThreadMain)&chercherFichiers` (on transforme le type de `chercherFichiers` en celui de fonction associée au thread `ThreadMain`). 
+Le type `ThreadMain` est défini dans votre programme `trier-mt.c` de la façon suivante : 
+```C
+typedef void * (*ThreadMain)(void *);
+```
+Vous n'avez pas à rajouter cette ligne.
+
+**Travail à effectuer :**
 
 Modifiez le programme `trier-mt.c` de manière à créer 2 threads :
 

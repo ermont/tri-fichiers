@@ -5,13 +5,13 @@
  * Utilisation : trier <répertoire>
  * 
  * @author E. Chaput
- * @date 10/2000
+ * @date 10/2000 modified 11/2024
  */
 
 #include <stdio.h>
 #include <stdlib.h>   /* malloc */
 #include <string.h>
-
+#include <pthread.h>
 #include <tri-fichier.h>
 #include <liste-noms-mt.h>
 
@@ -21,6 +21,7 @@ int main(int argc, char * argv[])
 {
    RechercheNomsFichiers   recherche;
    ListeTrieeNoms        * listeTriee;
+   pthread_t tidTri, tidRech; /* identificateurs des threads */
 
    /* Initialisation de la structure de recherche */
    recherche.liste = creerListeNoms();
@@ -35,7 +36,7 @@ int main(int argc, char * argv[])
 
    /* On remplit la liste */
    chercherFichiers(&recherche);
-
+   
    /* On trie */
    listeTriee = trier(recherche.liste);
 

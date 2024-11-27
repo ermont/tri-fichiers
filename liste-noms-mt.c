@@ -12,6 +12,7 @@
 #include <string.h> 
 
 #include <assert.h>
+#include <pthread.h>
 
 ListeNoms * creerListeNoms(void)
 {
@@ -24,6 +25,8 @@ void initialiserListeNoms(ListeNoms * f)
 {
    f->premier = NULL;
    f->dernier = NULL;
+   //f->verrou = PTHREAD_MUTEX_INITIALIZER;
+   pthread_mutex_init(&f->verrou, NULL);
 }
 
 void insererNom(ListeNoms * f, Nom nom)
@@ -44,6 +47,7 @@ void insererNom(ListeNoms * f, Nom nom)
    if (f->premier == NULL) {
       f->premier = nc;
    }
+
 }
 
 void extraireNom(ListeNoms * f, Nom * nom)

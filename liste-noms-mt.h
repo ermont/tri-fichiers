@@ -13,6 +13,10 @@
 #include <nom.h>
 #include <stdbool.h>
 
+#include <pthread.h>
+
+
+
 /**
  * Type d'une cellule de la liste
  */
@@ -28,6 +32,7 @@ typedef struct _CelluleNom {
 struct ListeNoms {
    CelluleNom * premier;
    CelluleNom * dernier;
+   pthread_mutex_t verrou;
 };
 
 typedef struct ListeNoms ListeNoms;
