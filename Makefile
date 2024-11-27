@@ -5,10 +5,10 @@ CC=gcc
 PROGRAMMES = trier trier-mt
 
 # Les options de compilation : toutes les erreurs sont importantes
-CFLAGS = -D_REENTRANT -I. -Wextra -pedantic -Wall -O3
+CFLAGS = -D_REENTRANT -I. -Wextra -Wall -O3
 
-# Options pour l'édition de lien, ici : -lpthread pour utiliser la librairie POSIX threads
-LDFLAGS = -lpthread 
+# Options pour l'édition de lien, ici : -pthread pour utiliser la librairie POSIX threads
+LDFLAGS = -pthread 
 
 all: $(PROGRAMMES)
 
