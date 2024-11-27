@@ -16,7 +16,7 @@ typedef struct {
  * @brief Recherche de tous les noms des fichiers contenus dans un 
  * répertoire (et ses sous répertoire)
  */
-void chercherFichiers(RechercheNomsFichiers * recherche);
+void *chercherFichiers(RechercheNomsFichiers * recherche);
 
 /**
  * @brief Tri d'une liste de noms.
