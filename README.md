@@ -203,7 +203,7 @@ Modifiez le programme `trier-mt.c` de manière à créer 2 threads :
 
 - un thread qui effectue le trie de la liste de fichiers trouvée.
 
-Testez l'exécution du programme avec ces 2 threads.
+Testez l'exécution du programme avec ces 2 threads. Qu'en pensez-vous ?
 
 ### Attente de la terminaison des threads
 
@@ -215,8 +215,7 @@ Testez l'exécution du programme avec ces 2 threads.
     retour.
 >
 
-A ce stade, les threads s'exécutent en parallèle. La primitive
-`pthread_join` permet d'attendre la terminaison des threads. La valeur
+A ce stade, les threads s'exécutent en parallèle mais aucun résultat ne s'affiche. La primitive `pthread_join` permet d'attendre la terminaison des threads. La valeur
 de retour du thread est alors transmis via l'argument `thread_return`.
 Par exemple :
 ```c
@@ -229,6 +228,24 @@ Ici, le thread `tidTri` retourne une `listeTriee` de noms de fichiers.
 
 Modifiez le programme `trier-mt.c` de manière à attendre la terminaison
 des 2 threads créés précédemment.
+
+**Où placer l'attente de terminaison ?** Commencez par attendre la terminaison du thread
+après le lancement. En d'autres termes, vous devriez avoir un code qui ressemble à :
+```
+pthread_create(tidRech, ...);
+pthread_join(tidRech, ...);
+pthread_create(tidTri, ...);
+pthread_join(tidTri,...);
+```
+Le fonctionnement de cette solution devrait être correct car nous retrouvons un schéma d'exécution séquentiel.
+Mais ce fonctionnement ne correspond pas à la solution que nous envisageons où la recherche et le tri s'effectuent en parallèle. Vous devriez donc avoir :
+```
+pthread_create(tidRech, ...);
+pthread_create(tidTri, ...);
+pthread_join(tidRech, ...);
+pthread_join(tidTri, ...);
+```
+Quel devient le résultat et pourquoi ?
 
 ### Synchronisation
 
@@ -261,12 +278,20 @@ sous-programmes manipulent la structure `listeNoms`.
         
 > `int pthread_mutex_lock(pthread_mutex_t *verrou);` : verrouillage --
 entrée en section critique\
-> `int pthread_mutex_unlock(pthread_mutex_t *mutex);` : déverrouillage --
+> `int pthread_mutex_unlock(pthread_mutex_t *verrou);` : déverrouillage --
 sortie de la section critique
 
 Modifier les fichiers `liste-noms-mt.h` et `liste-noms-mt.c` de façon à
 protéger les accès concurrents à une liste de noms.\
 Testez le (bon ?) fonctionnement du programme.
+
+**Où déclarer le verrou ?** La question à se poser ici est de savoir à qui appartient le verrou. 
+Nous avons 2 solutions.
+
+1. La premier consiste à déclarer le verrou en variable globale (dans `liste-noms-mt.h` en dehors de toute 
+fonction et structure). Quel problème pose cette solution quant à l'accès au verrou par 2 listes de noms différentes (mais de même type) ?
+
+2. Le verrou est un attribut de la liste de noms, c'est-à-dire c'est un champs de `struct ListeNoms`. Dans ce cas, son rôle sera de protéger l'accès à la liste de noms considérée.
 
 #### Qu'est-ce qu'une liste vide ?
 
@@ -318,7 +343,8 @@ sous-programmes suivants :
 
 Modifiez les fichiers `liste-noms-mt.h` et `liste-noms-mt.c` de manière
 à ajouter les deux sous-programmes `ouvrirListeNoms` et
-`fermerListeNoms` spécifiés ci-dessus.
+`fermerListeNoms` spécifiés ci-dessus, qui incrémente (lors de l'ouverture) et qui décrémente (à la fermeture) le compteur du `nbProducteurs`.
+
 Modifiez aussi le sous-programme `listeNomsVide` pour prendre en compte
 le nombre de producteurs toujours présents.
 
@@ -348,7 +374,7 @@ précondition lors d'un tel appel. Ainsi une portion de code telle que :
     }
     ...
 ```
-ne garanti en rien que l'invocation de `extraireNom` ne se fera pas sur
+ne garantit en rien que l'invocation de `extraireNom` ne se fera pas sur
 une liste vide. Nous nous trouvons en effet face au problème classique
 de la non-atomicité du couple d'opérations test/modification.
 
@@ -415,8 +441,30 @@ thread en attente de la condition
 Modifiez les sous-programmes `extraiteNoms` et `insererNom` de manière à
 éviter l'attente active des consommateurs, c'est-à-dire à ne réveiller
 le thread de tri uniquement lorsqu'une données est disponible dans la
-liste de noms. Pourquoi est-il également nécessaire de modifier
-`fermerListeNoms` ?
+liste de noms. 
+
+**Définition de la variable condition.**
+La question est « que doit attendre le programme de tri ? ». 
+Ici, il s'agit de savoir s'il y a une données dans la liste de noms. 
+La condition à considérer est donc `donneesPretes`.
+Elle se définit donc de la façon suivante : 
+```c
+pthread_cond_t donneesPretes;
+```
+
+A ce stade vous devriez savoir où placer cette déclaration.
+
+**Initialisation et manipulation de la variable condition.**
+
+Comme pour le verrou, la variable condition est un attribut de la liste de noms.
+Dans la fonction `extraireNoms`, une fois l'accès à la liste obtenu, il faut attendre (appeler la fonction `pthread_cond_wait`) lorsque la liste est vide. 
+Le déblocage de l'extraction de nom se fera lorsque les données sont insérées par la fonction `insererNoms`.
+Ce déblocage se fera donc par l'appel de la fonction `pthread_cond_signal` dans la fonction `insererNoms`.
+
+**Problème de la terminaison de l'écriture dans la liste**
+
+Lorsqu'il n'y a plus de producteur dans la liste, il est possible que la fonction `extraireNoms` soit toujours bloquée dans l'attente de la condition. 
+Il faut donc modifier la fonction `fermerListeNoms` pour tenir compte de ce problème. 
 
 ### Prise en compte dans le programme
 
