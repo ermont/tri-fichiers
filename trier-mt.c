@@ -12,8 +12,8 @@
 #include <stdlib.h>   /* malloc */
 #include <string.h>
 #include <pthread.h>
-#include <tri-fichier.h>
 #include <liste-noms-mt.h>
+#include <tri-fichier.h>
 
 typedef void * (*ThreadMain)(void *);
 
