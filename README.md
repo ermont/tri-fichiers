@@ -285,8 +285,9 @@ Modifier les fichiers `liste-noms-mt.h` et `liste-noms-mt.c` de façon à
 protéger les accès concurrents à une liste de noms.\
 Testez le (bon ?) fonctionnement du programme.
 
-**Où déclarer le verrou ?** La question à se poser ici est de savoir à qui appartient le verrou. 
-Nous avons 2 solutions.
+**Où déclarer le verrou ?** 
+
+La question à se poser ici est de savoir à qui appartient le verrou.  Nous avons 2 solutions.
 
 1. La premier consiste à déclarer le verrou en variable globale (dans `liste-noms-mt.h` en dehors de toute 
 fonction et structure). Quel problème pose cette solution quant à l'accès au verrou par 2 listes de noms différentes (mais de même type) ?
@@ -446,10 +447,10 @@ liste de noms.
 **Définition de la variable condition.**
 La question est « que doit attendre le programme de tri ? ». 
 Ici, il s'agit de savoir s'il y a une données dans la liste de noms. 
-La condition à considérer est donc `donneesPretes`.
+La condition à considérer est donc `donneeDisponible`.
 Elle se définit donc de la façon suivante : 
 ```c
-pthread_cond_t donneesPretes;
+pthread_cond_t donneeDisponible;
 ```
 
 A ce stade vous devriez savoir où placer cette déclaration.
