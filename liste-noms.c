@@ -76,7 +76,7 @@ void afficherListeNoms(ListeNoms f)
    }
 }
 
-bool listeNomsVide(ListeNoms f)
+bool listeNomsVide(ListeNoms *f)
 {
-   return (f.premier == NULL);
+   return (f->premier == NULL);
 }

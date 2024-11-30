@@ -21,8 +21,7 @@ int main(int argc, char * argv[])
 {
    RechercheNomsFichiers   recherche;
    ListeTrieeNoms        * listeTriee;
-   pthread_t tidTri, tidRech; /* identificateurs des threads */
-
+   
    /* Initialisation de la structure de recherche */
    recherche.liste = creerListeNoms();
 

@@ -149,7 +149,7 @@ make
 ```
 et exécutez le :
 ```bash
-./trier ~
+./trier .
 ```
 
 ## Utilisation des threads
@@ -178,7 +178,7 @@ puis remplacer les deux lignes d'appel aux sous-programmes par le
 lancement de thread, par exemple :
 ```c
     /* On lance le thread qui remplit la liste */
-    if ((erreur= pthread_create(&tidRech, NULL, (ThreadMain)&chercherFichiers, &recherche)) != 0) {
+    if ((erreur= pthread_create(&tidRech, NULL, (ThreadMain)chercherFichiers, &recherche)) != 0) {
         fprintf(stderr, "[%s] erreur pthread create\n", strerror(erreur));
         exit(EXIT_FAILURE);
     }
@@ -369,7 +369,7 @@ Il devient malheureusement impossible pour un thread d'assurer la
 précondition lors d'un tel appel. Ainsi une portion de code telle que :
 ```c
     ...
-    if (!listeNomsVide(*liste)) {
+    if (!listeNomsVide(liste)) {
     extraireNom(liste, &nom);
     ...
     }
@@ -410,7 +410,7 @@ liste, un thread qui souhaite consommer des éléments de la liste tant
 que celle-ci n'est pas vide doit avoir un comportement tel que ce qui
 suit
 ```c
-    while (!listeNomsVide(*liste)) { 
+    while (!listeNomsVide(liste)) { 
                                   // Tant que la liste n'est pas vide ...
         extraireNom(liste, &nom); // ... j'extrai le premier élément.
         if (nom != NULL) {        // Si j'ai bien obtenu un élément ...

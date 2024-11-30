@@ -85,6 +85,6 @@ void afficherListeNoms(ListeNoms f);
  * @return true si la liste de nom est vide
  * @return false sinon
  */
-bool listeNomsVide(ListeNoms f);
+bool listeNomsVide(ListeNoms *f);
 
 #endif

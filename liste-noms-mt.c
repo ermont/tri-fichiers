@@ -25,7 +25,6 @@ void initialiserListeNoms(ListeNoms * f)
 {
    f->premier = NULL;
    f->dernier = NULL;
-   //f->verrou = PTHREAD_MUTEX_INITIALIZER;
    pthread_mutex_init(&f->verrou, NULL);
 }
 
@@ -80,7 +79,7 @@ void afficherListeNoms(ListeNoms f)
    }
 }
 
-bool listeNomsVide(ListeNoms f)
+bool listeNomsVide(ListeNoms *f)
 {
-   return (f.premier == NULL);
+   return (f->premier == NULL);
 }
