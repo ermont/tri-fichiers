@@ -20,7 +20,7 @@ typedef void * (*ThreadMain)(void *);
 int main(int argc, char * argv[])
 {
    RechercheNomsFichiers   recherche;
-   ListeTrieeNoms        * listeTriee;
+   ListeTrieeNoms        * listeTriee = NULL;
    
    /* Initialisation de la structure de recherche */
    recherche.liste = creerListeNoms();
@@ -40,7 +40,9 @@ int main(int argc, char * argv[])
    listeTriee = trier(recherche.liste);
 
    /* On affiche la liste tri�e */
-   afficherListeTrieeNoms(*listeTriee);
+   if (listeTriee) {
+      afficherListeTrieeNoms(*listeTriee);
+   }
 
    return 0;
 }

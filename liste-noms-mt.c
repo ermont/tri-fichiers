@@ -25,7 +25,6 @@ void initialiserListeNoms(ListeNoms * f)
 {
    f->premier = NULL;
    f->dernier = NULL;
-   pthread_mutex_init(&f->verrou, NULL);
 }
 
 void insererNom(ListeNoms * f, Nom nom)
